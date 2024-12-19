@@ -5,6 +5,8 @@
   "scripts": {
     "build": "ng build",
     "build:dev": "npm run build -- --configuration development",
+    "cypress:headless": "cypress run --config-file cypress/cypress.config.ts --headless -b chrome",
+    "cypress:open": "cypress open --config-file cypress/cypress.config.ts",
     "lint": "ng lint",
     "lint:fix": "npm run lint -- --fix",
     "ng": "ng",
@@ -12,13 +14,18 @@
     "prettier": "prettier --config .prettierrc --write \"**/*.{css,html,js,jsx,json,md,scss,ts,tsx,yaml,yml}\"",
     "prettier:test": "prettier --config .prettierrc --list-different \"**/*.{css,html,js,jsx,json,md,scss,ts,tsx,yaml,yml}\"",
     "start": "ng serve",
-    "test": "npm run lint && npm run test:ci",
+    "test": "npm run lint && npm run test:ci && npm run test:cypress",
     "test:ci": "ng test --no-watch --no-progress --browsers=ChromeHeadless",
+    "test:cypress": "start-server-and-test start http://localhost:4200 cypress:headless",
+    "test:cypress:open": "start-server-and-test start http://localhost:4200 cypress:open",
     "watch": "ng build --watch --configuration development"
   },
   "lint-staged": {
     "*.{css,html,js,jsx,json,md,scss,ts,tsx,yaml,yml}": [
       "prettier --write"
+    ],
+    "cypress/**/*.{html,js,jsx,ts,tsx}": [
+      "ng-lint-staged lint --fix --"
     ],
     "src/**/*.{html,js,jsx,ts,tsx}": [
       "ng-lint-staged lint --fix --"
@@ -52,6 +59,7 @@
     "@types/node": "^18",
     "@typescript-eslint/eslint-plugin": "^7",
     "@typescript-eslint/parser": "^7",
+    "cypress": "^13",
     "eslint": "^8",
     "eslint-config-prettier": "^9",
     "eslint-import-resolver-typescript": "^3",
@@ -70,6 +78,7 @@
     "lint-staged": "^15",
     "ng-lint-staged": "^12",
     "prettier": "^3",
+    "start-server-and-test": "^2",
     "typescript": "~4.9"
   }
 }
